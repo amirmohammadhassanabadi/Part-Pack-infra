@@ -3,7 +3,7 @@ services:
     image: nginx:alpine
     restart: unless-stopped
     volumes:
-      - /srv/part-pack/nginx/:/etc/nginx/conf.d/
+      - /srv/part-pack/infra/nginx/:/etc/nginx/conf.d/
       - /srv/part-pack/certs:/etc/nginx/certs:ro
     ports:
       - "80:80"
@@ -16,8 +16,6 @@ services:
   frontend:
     image: registry.part-pack.ir/part-pack/frontend:v1
     restart: unless-stopped
-    environment:
-      BACKEND_BASE_URL: http://backend:4000/api/v1
     networks:
       - front-net
       - app-net
