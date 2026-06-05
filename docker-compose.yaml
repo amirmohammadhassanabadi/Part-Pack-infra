@@ -1,0 +1,54 @@
+services:
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    volumes:
+      - /srv/part-pack/nginx/:/etc/nginx/conf.d/
+      - /srv/part-pack/certs:/etc/nginx/certs:ro
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - front-net
+    depends_on:
+      - backend
+
+  frontend:
+    image: registry.part-pack.ir/part-pack/frontend:v1
+    restart: unless-stopped
+    environment:
+      BACKEND_BASE_URL: http://backend:4000/api/v1
+    networks:
+      - front-net
+      - app-net
+    depends_on:
+      - backend
+
+  backend:
+    image: registry.part-pack.ir/part-pack/backend:v1
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      MONGO_URI: mongodb://mongo:27017/Part-Pack
+    networks:
+      - app-net
+      - back-net
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:8
+    restart: unless-stopped
+    volumes:
+      - /srv/part-pack/data/mongo:/data/db
+    networks:
+      - back-net
+
+networks:
+  front-net:
+    driver: bridge
+  app-net:
+    driver: bridge
+  back-net:
+    driver: bridge
