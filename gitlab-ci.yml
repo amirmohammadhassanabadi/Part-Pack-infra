@@ -11,7 +11,7 @@ workflow:
 deploy:
   stage: deploy
   tags:
-    - part-pack
+    - part-pack-infra
   rules:
     - if: '$DEPLOY_SERVICE == "frontend" || $DEPLOY_SERVICE == "backend"'
     - when: never
