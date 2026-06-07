@@ -11,7 +11,7 @@ services:
     networks:
       - front-net
     depends_on:
-      - backend
+      - frontend
 
   frontend:
     image: registry.part-pack.ir/part-pack/frontend:v1
