@@ -14,7 +14,7 @@ services:
       - frontend
 
   frontend:
-    image: registry.part-pack.ir/part-pack/frontend:v1
+    image: registry.part-pack.ir/part-pack/frontend:production
     restart: unless-stopped
     networks:
       - front-net
@@ -23,7 +23,7 @@ services:
       - backend
 
   backend:
-    image: registry.part-pack.ir/part-pack/backend:v1
+    image: registry.part-pack.ir/part-pack/backend:production
     restart: unless-stopped
     environment:
       NODE_ENV: production
