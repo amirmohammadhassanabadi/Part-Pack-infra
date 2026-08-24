@@ -29,6 +29,8 @@ services:
       NODE_ENV: production
       PORT: 4000
       MONGO_URI: mongodb://mongo:27017/Part-Pack
+      OTEL_SERVICE_NAME: part-pack-backend
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4318
     networks:
       - app-net
       - back-net
@@ -40,6 +42,14 @@ services:
     restart: unless-stopped
     volumes:
       - /srv/part-pack/data/mongo:/data/db
+    networks:
+      - back-net
+
+  jaeger:
+    image: jaegertracing/jaeger:latest
+    restart: unless-stopped
+    ports:
+      - "16686:16686"
     networks:
       - back-net
 
