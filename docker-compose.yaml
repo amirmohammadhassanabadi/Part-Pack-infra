@@ -29,6 +29,7 @@ services:
       NODE_ENV: production
       PORT: 4000
       MONGO_URI: mongodb://mongo:27017/Part-Pack
+      JWT_ACCESS_SECRET: a2ead22ec82a7463fbe2b33c5f3e7297d981f81e807393ab41e9ce3e3f91cce9
       OTEL_SERVICE_NAME: part-pack-backend
       OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4318
     networks:
