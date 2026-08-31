@@ -1,0 +1,8 @@
+services:
+  gitlab-runner:
+    image: gitlab/gitlab-runner:latest
+    pull_policy: if_not_present
+    volumes:
+    - /opt/gitlab-runner/config:/etc/gitlab-runner
+    - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
