@@ -1,0 +1,21 @@
+services:
+  nexus:
+    image: sonatype/nexus3:latest
+    ports:
+      - "8081:8081"
+      - "8082:8082"
+      - "8083:8083"
+    volumes:
+      - /opt/nexus/data:/nexus-data
+    networks:
+      - nexus-net
+    restart: unless-stopped
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+
+networks:
+  nexus-net:
+    name: nexus-net
+    driver: bridge
