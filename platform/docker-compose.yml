@@ -1,0 +1,53 @@
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    restart: unless-stopped
+    networks:
+      - platform-net
+    ports:
+      - "443:443"
+      - "80:80"
+      - "8082:8082"
+      - "8083:8083"
+    volumes:
+      - /opt/platform/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - /opt/platform/nginx/conf.d:/etc/nginx/conf.d:ro
+      - /opt/platform/certs:/etc/nginx/certs:ro
+    depends_on:
+      - gitlab
+      - nexus
+
+  gitlab:
+    image: gitlab/gitlab-ce:19.1.7-ce.0
+    container_name: gitlab
+    restart: always
+    hostname: gitlab.part-pack.ir
+    shm_size: "512m"
+    ports:
+      - "2222:22"
+    volumes:
+      - /opt/platform/gitlab/config:/etc/gitlab
+      - /opt/platform/gitlab/data:/var/opt/gitlab
+    networks:
+      - platform-net
+
+  nexus:
+    image: sonatype/nexus3:latest
+    container_name: nexus
+    restart: unless-stopped
+    environment:
+      - INSTALL4J_ADD_VM_PARAMS=-Xms2048m -Xmx2048m -XX:MaxDirectMemorySize=2048m
+    volumes:
+      - /opt/platform/nexus/data:/nexus-data
+    networks:
+      - platform-net
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+
+networks:
+  platform-net:
+    name: platform-net
+    driver: bridge
