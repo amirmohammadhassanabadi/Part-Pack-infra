@@ -1,0 +1,25 @@
+services:
+  stalwart:
+    image: stalwartlabs/stalwart:v0.16.20
+    container_name: stalwart
+    restart: unless-stopped
+
+    ports:
+      - "25:25"
+      - "465:465"
+      - "587:587"
+      - "993:993"
+      - "8080:8080"
+
+    volumes:
+      - /opt/stalwart/data:/opt/stalwart-mail
+      - /opt/stalwart/config:/etc/stalwart
+      - /opt/stalwart/lib:/var/lib/stalwart
+
+    networks:
+      - mail-net
+
+networks:
+  mail-net:
+    name: mail-net
+    driver: bridge
